@@ -6,7 +6,7 @@ const cors = require('cors')
 database = {
   users: [
     {
-      id: 1,
+      id: '1',
       name: 'John',
       email: 'john@email.com',
       password: 'cookies',
@@ -14,7 +14,7 @@ database = {
       joined: new Date()
     },
     {
-      id: 2,
+      id: '2',
       name: 'Sally',
       email: 'sally@email.com',
       password: 'bananas',
@@ -22,7 +22,7 @@ database = {
       joined: new Date()
     },
     {
-      id: 3,
+      id: '3',
       name: 'Mary',
       email: 'mary@email.com',
       password: 'apples',
@@ -60,6 +60,35 @@ app.post('/register', (req, res) => {
     joined: new Date()
   })
   res.json(database.users[database.users.length - 1])
+})
+
+app.get('/profile/:id', (req, res) => {
+  const { id } = req.params
+  let found = false
+  database.users.forEach(user => {
+    if (user.id === id) {
+      found = true;
+      return res.json(user)
+    }
+  })
+  if (!found) {
+    res.status(400).json('no such user')
+  }
+})
+
+app.put('/image', (req,res) => {
+  const { id } = req.body
+  let found = false
+  database.users.forEach(user => {
+    if (user.id === id) {
+      found = true;
+      user.entries++
+      return res.json(user.entries)
+    }
+  })
+  if (!found) {
+    res.status(400).json('no such user')
+  }
 })
 
 app.listen(3000, () => {

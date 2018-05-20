@@ -10,21 +10,24 @@ database = {
       name: 'John',
       email: 'john@email.com',
       password: 'cookies',
-      age: 30
+      entries: 0,
+      joined: new Date()
     },
     {
       id: 2,
       name: 'Sally',
       email: 'sally@email.com',
       password: 'bananas',
-      age: 6
+      entries: 0,
+      joined: new Date()
     },
     {
       id: 3,
       name: 'Mary',
       email: 'mary@email.com',
       password: 'apples',
-      age: 31
+      entries: 0,
+      joined: new Date()
     },
   ]
 }
@@ -33,17 +36,30 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.json('this is working')
+  res.json(database.users)
 })
 
 app.post('/signin', (req, res) => {
-  if (req.body.name === database.users[0].name) {
+  if (req.body.email === database.users[0].email &&
+      req.body.email === database.users[0].email) {
     res.json({
       "success": "Name Found"
     }) } else {
       res.status(400).json({"success": "Name not found"})
     }
+})
 
+app.post('/register', (req, res) => {
+  const {email, name,password} = req.body
+  database.users.push({
+    id: 4,
+    name: name,
+    email: email,
+    password: password,
+    entries: 0,
+    joined: new Date()
+  })
+  res.json(database.users[database.users.length - 1])
 })
 
 app.listen(3000, () => {
